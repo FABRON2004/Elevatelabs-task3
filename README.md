@@ -1,4 +1,3 @@
-# Elevatelabs-task3
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -6,9 +5,11 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("your_dataset.csv")
-X = df.drop("target_column", axis=1)
-y = df["target_column"]
+df = pd.read_csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
+df = df.select_dtypes(include=[np.number]).dropna()
+
+X = df.drop("Fare", axis=1)
+y = df["Fare"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -25,11 +26,13 @@ print("MAE:", mae)
 print("MSE:", mse)
 print("R2:", r2)
 
-plt.scatter(y_test, y_pred)
+plt.figure(figsize=(8,6))
+plt.scatter(y_test, y_pred, alpha=0.7)
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')
 plt.xlabel("Actual")
 plt.ylabel("Predicted")
 plt.title("Actual vs Predicted")
-plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')
+plt.grid(True)
 plt.show()
 
 print("Coefficients:", model.coef_)
